@@ -6,7 +6,7 @@ const VendorsService = require('./vendors-service');
 const vendorsRouter = express.Router();
 const jsonParser = express.json();
 
-const serializevendors = (vendors) => ({
+const serializevendors = vendors => ({
   id: vendors.id,
   user_id: vendors.user_id,
   name: vendors.name,
@@ -17,14 +17,7 @@ const serializevendors = (vendors) => ({
   zip: xss(vendors.zip),
   phone: xss(vendors.phone),
   email: xss(vendors.email),
-  hoursofbusiness: xss(vendors.hoursofbusiness),
-  itemcount: xss(vendors.itemcount),
-  itemprice: xss(vendors.itemprice),
-  img: xss(vendors.img),
-  date_created: xss(vendors.date_created),
 });
-
-
 
 vendorsRouter
   .route('/')
@@ -46,11 +39,6 @@ vendorsRouter
       zip,
       phone,
       email,
-      hoursofbusiness,
-      itemcount,
-      itemprice,
-      img,
-      date_created,
     } = req.body;
 
     const newVendor = {
@@ -63,11 +51,6 @@ vendorsRouter
       zip,
       phone,
       email,
-      hoursofbusiness,
-      itemcount,
-      itemprice,
-      img,
-      date_created,
     };
 
     for (const [key, value] of Object.entries(newVendor))
@@ -78,8 +61,7 @@ vendorsRouter
           },
         });
 
-    console.log(newVendor)
-
+    console.log(newVendor);
 
     VendorsService.insertVendors(req.app.get('db'), newVendor)
       .then(vendor => {
@@ -108,16 +90,12 @@ vendorsRouter
   })
 
   .get((req, res, next) => {
-    res.json(
-      serializevendors(res.vendors));
+    res.json(serializevendors(res.vendors));
   })
 
   .delete((req, res, next) => {
-    VendorsService
-      .deleteVendorById(
-        req.app.get('db'),
-        req.params.vendor_id)
-      .then((vendorRows) => {
+    VendorsService.deleteVendorById(req.app.get('db'), req.params.vendor_id)
+      .then(vendorRows => {
         res.status(204).json(vendorRows).end();
       })
       .catch(next);
@@ -134,11 +112,7 @@ vendorsRouter
       zip,
       phone,
       email,
-      hoursofbusiness,
-      itemcount,
-      itemprice,
-      img,
-      date_created } = req.body;
+    } = req.body;
 
     const vendorToUpdate = {
       user_id,
@@ -150,21 +124,16 @@ vendorsRouter
       zip,
       phone,
       email,
-      hoursofbusiness,
-      itemcount,
-      itemprice,
-      img,
-      date_created
     };
-    console.log(vendorToUpdate,"hello")
+    console.log(vendorToUpdate, 'hello');
 
-    const numberOfValues = Object.values(vendorToUpdate).filter(Boolean).length
+    const numberOfValues = Object.values(vendorToUpdate).filter(Boolean).length;
     if (numberOfValues === 0) {
       return res.status(400).json({
         error: {
-          message: `Missing 'name', 'description', 'streetaddress', 'state','zip', 'phone', 'email', 'hoursofbusiness', 'itemCount', 'itemPric, 'img', date_created'`
-        }
-      })
+          message: `Missing 'name', 'description', 'streetaddress', 'state','zip', 'phone', 'email'`,
+        },
+      });
     }
     VendorsService.updateVendorById(
       req.app.get('db'),
@@ -172,13 +141,9 @@ vendorsRouter
       vendorToUpdate
     )
       .then(vendorToUpdate => {
-        res
-          .status(200)
-          .json(serializevendors(vendorToUpdate))
-
+        res.status(200).json(serializevendors(vendorToUpdate));
       })
-      .catch(next)
-
-  })
+      .catch(next);
+  });
 
 module.exports = vendorsRouter;

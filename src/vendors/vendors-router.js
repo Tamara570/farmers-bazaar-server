@@ -6,22 +6,22 @@ const VendorsService = require('./vendors-service');
 const vendorsRouter = express.Router();
 const jsonParser = express.json();
 
-const serializeimp_vendors = (imp_vendors) => ({
-  id: imp_vendors.id,
-  user_id: imp_vendors.user_id,
-  name: imp_vendors.name,
-  description: imp_vendors.description,
-  streetaddress: xss(imp_vendors.streetaddress),
-  city: xss(imp_vendors.city),
-  state: xss(imp_vendors.state),
-  zip: xss(imp_vendors.zip),
-  phone: xss(imp_vendors.phone),
-  email: xss(imp_vendors.email),
-  hoursofbusiness: xss(imp_vendors.hoursofbusiness),
-  itemcount: xss(imp_vendors.itemcount),
-  itemprice: xss(imp_vendors.itemprice),
-  img: xss(imp_vendors.img),
-  date_created: xss(imp_vendors.date_created),
+const serializevendors = (vendors) => ({
+  id: vendors.id,
+  user_id: vendors.user_id,
+  name: vendors.name,
+  description: vendors.description,
+  streetaddress: xss(vendors.streetaddress),
+  city: xss(vendors.city),
+  state: xss(vendors.state),
+  zip: xss(vendors.zip),
+  phone: xss(vendors.phone),
+  email: xss(vendors.email),
+  hoursofbusiness: xss(vendors.hoursofbusiness),
+  itemcount: xss(vendors.itemcount),
+  itemprice: xss(vendors.itemprice),
+  img: xss(vendors.img),
+  date_created: xss(vendors.date_created),
 });
 
 
@@ -95,13 +95,13 @@ vendorsRouter
   .route('/:vendor_id')
   .all((req, res, next) => {
     VendorsService.getVendorsById(req.app.get('db'), req.params.vendor_id)
-      .then(imp_vendors => {
-        if (!imp_vendors) {
+      .then(vendors => {
+        if (!vendors) {
           return res.status(404).json({
             error: { message: `Vendor doesn't exist` },
           });
         }
-        res.imp_vendors = imp_vendors; // save the vendor for the next middleware
+        res.vendors = vendors; // save the vendor for the next middleware
         next(); // don't forget to call next so the next middleware happens!
       })
       .catch(next);
@@ -109,7 +109,7 @@ vendorsRouter
 
   .get((req, res, next) => {
     res.json(
-      serializeimp_vendors(res.imp_vendors));
+      serializevendors(res.vendors));
   })
 
   .delete((req, res, next) => {
@@ -174,7 +174,7 @@ vendorsRouter
       .then(vendorToUpdate => {
         res
           .status(200)
-          .json(serializeimp_vendors(vendorToUpdate))
+          .json(serializevendors(vendorToUpdate))
 
       })
       .catch(next)

@@ -10,10 +10,10 @@ const UsersService = {
         }
     },
     getAllUsers(knex) {
-        return knex.select('*').from('users')
+        return knex.select('*').from('userlogin')
     },
     hasUserWithUserName(db, user_name) {
-        return db('users')
+        return db('userlogin')
             .where({ user_name })
             .first()
             .then(user => !!user)
@@ -21,7 +21,7 @@ const UsersService = {
     insertUser(db, newUser) {
         return db
             .insert(newUser)
-            .into('users')
+            .into('userlogin')
             .returning('*')
             .then(([user]) => user)
     },
@@ -41,13 +41,13 @@ const UsersService = {
         return bcrypt.hash(password, 12)
     },
     deleteUser(knex, id) {
-        return knex('users')
+        return knex('userlogin')
             .where({ id })
             .delete()
     },
     getById(knex, id) {
         return knex
-            .from('users')
+            .from('userlogin')
             .select('*')
             .where('id', id)
             .first()

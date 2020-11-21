@@ -11,6 +11,7 @@ authRouter
       user_name,
       password
     } = req.body
+    console.log('LOGIN body', req.body)
     const loginUser = {
       user_name,
       password

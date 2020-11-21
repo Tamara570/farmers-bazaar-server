@@ -20,6 +20,7 @@ const UsersService = {
     },
     insertUser(db, newUser) {
         console.log(newUser,'new user payload service')
+        
         return db
             .insert(newUser)
             .into('users')

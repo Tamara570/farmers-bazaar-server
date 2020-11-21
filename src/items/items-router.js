@@ -14,7 +14,6 @@ const serializeItems = (items) => ({
   itemcount: xss(items.itemcount),
   itemprice: xss(items.itemprice),
   img: xss(items.img),
-  date_created: xss(items.date_created)
 });
 
 
@@ -46,8 +45,7 @@ itemsRouter
       description,
       itemcount,
       itemprice,
-      img,
-      date_created
+      img
     };
 
     for (const [key, value] of Object.entries(newItem))
@@ -110,8 +108,7 @@ itemsRouter
       description,
       itemcount,
       itemprice,
-      img,
-      date_created } = req.body;
+      img } = req.body;
 
     const itemToUpdate = {
       users_id,
@@ -119,8 +116,7 @@ itemsRouter
       description,
       itemcount,
       itemprice,
-      img,
-      date_created
+      img
     };
     console.log(itemToUpdate,"hello")
 

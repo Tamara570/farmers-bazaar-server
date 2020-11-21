@@ -26,14 +26,15 @@ usersRouter
             city,
             state,
             zip } = req.body
+            console.log('user to be logged in ', req.body)
 
-        console.log("user_name:", user_name, "password-->", password, '<---');
+       // console.log("user_name:", user_name, "password-->", password, '<---');
 
-        for (const field of ['user_name', 'password'])
+       /*  for (const field of ['user_name', 'password'])
             if (!req.body[field])
                 return res.status(400).json({
                     error: `Missing '${field}' in request body`
-                })
+                }) */
         const passwordError = UsersService.validatePassword(password.trim())
 
         console.log("password error:", passwordError);

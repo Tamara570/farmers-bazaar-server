@@ -87,7 +87,7 @@ itemsRouter
 
   .get((req, res, next) => {
     res.json(
-      serializeimp_items(res.items));
+      serializeItems(res.items));
   })
 
   .delete((req, res, next) => {
